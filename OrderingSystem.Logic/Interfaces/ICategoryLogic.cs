@@ -43,7 +43,7 @@ namespace OrderingSystem.Logic.Interfaces
         /// </summary>
         /// <param name="subCategoryId">The ID of the SubCategory</param>
         /// <returns>A List of Drink Objects or null if it failed</returns>
-        List<Drink> GetDrinks(Guid subCategoryId);
+        List<Guid> GetDrinks(Guid subCategoryId);
         
         /// <summary>
         /// Gets a Category Object by its ID from a Database

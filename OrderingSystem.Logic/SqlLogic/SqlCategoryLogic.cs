@@ -83,11 +83,11 @@ namespace OrderingSystem.Logic.SqlLogic
             }
         }
 
-        public List<Drink> GetDrinks(Guid categoryId)
+        public List<Guid> GetDrinks(Guid categoryId)
         {
             if (_dbConnection.IsConnected())
             {
-                var returnList = new List<Drink>();
+                var returnList = new List<Guid>();
                 
                 var query = "SELECT * FROM category_contents WHERE category_id=@category_id";
 
@@ -100,14 +100,7 @@ namespace OrderingSystem.Logic.SqlLogic
                 {
                     while (reader.Read())
                     {
-                        returnList.Add(new Drink()
-                        {
-                            Id = Guid.Parse(reader["id"].ToString()),
-                            Name = reader["name"].ToString(),
-                            Price = float.Parse(reader["price"].ToString()),
-                            Ingredients = reader["ingredients"].ToString(),
-                            ExtraInfo = reader["extra_info"].ToString()
-                        });
+                        returnList.Add(Guid.Parse(reader["drink_id"].ToString()));
                     }
 
                     return returnList;
