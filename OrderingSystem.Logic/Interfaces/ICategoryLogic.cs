@@ -1,29 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Reflection.PortableExecutable;
 using OrderingSystem.Domain;
 
 namespace OrderingSystem.Logic.Interfaces
 {
-    public interface ISubCategoryLogic
+    public interface ICategoryLogic
     {
         /// <summary>
-        /// Inserts a SubCategory Object into a Database
+        /// Inserts a Category Object into a Database
         /// </summary>
-        /// <param name="subCategory">The SubCategory Object</param>
-        void Add(SubCategory subCategory);
+        /// <param name="category">The Category Object</param>
+        void Add(Category category);
         
         /// <summary>
-        /// Edits a SubCategory Object in a Database
+        /// Edits a Category Object in a Database
         /// </summary>
-        /// <param name="subCategory">The new SubCategory Object</param>
-        void Edit(SubCategory subCategory);
+        /// <param name="category">The new Category Object</param>
+        void Edit(Category category);
         
         /// <summary>
-        /// Deletes a SubCategory Object from a Database
+        /// Deletes a Category Object from a Database
         /// </summary>
-        /// <param name="subCategoryId">The ID of the SubCategory</param>
-        void Delete(Guid subCategoryId);
+        /// <param name="categoryId">The ID of the Category</param>
+        void Delete(Guid categoryId);
         
         /// <summary>
         /// Adds a Drink Object to a SubCategory in a Database
@@ -38,19 +37,27 @@ namespace OrderingSystem.Logic.Interfaces
         /// <param name="drinkId">The ID of the Drink</param>
         /// <param name="subCategoryId">The ID of the SubCategory</param>
         void DeleteDrinkFromSubCategory(Guid drinkId, Guid subCategoryId);
-        
+
         /// <summary>
         /// Gets all Drinks from a SubCategory in a Database
         /// </summary>
         /// <param name="subCategoryId">The ID of the SubCategory</param>
         /// <returns>A List of Drink Objects or null if it failed</returns>
         List<Drink> GetDrinks(Guid subCategoryId);
-
+        
         /// <summary>
-        /// Gets a SubCategory Object by its ID from a Database
+        /// Gets a Category Object by its ID from a Database
         /// </summary>
-        /// <param name="subCategoryId">The ID of the SubCategory</param>
-        /// <returns>A SubCategory Object or null if it failed</returns>
-        SubCategory GetSubCategory(Guid subCategoryId);
+        /// <param name="categoryId">The ID of the Category</param>
+        /// <returns>A Category Object or null if it failed</returns>
+        Category GetCategory(Guid categoryId);
+        
+        /// <summary>
+        /// Gets all Category Objects from a Database
+        /// </summary>
+        /// <returns>A List of Category Objects or null if it failed</returns>
+        List<Category> GetCategories();
+
+        
     }
 }
