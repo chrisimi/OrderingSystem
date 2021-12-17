@@ -42,7 +42,7 @@ namespace OrderingSystem.Logic.Interfaces
         /// Gets all Drinks by its Customer from a Database
         /// </summary>
         /// <returns>A List of Drink Objects or null if it failed</returns>
-        List<Drink> GetDrinks();
+        List<Drink> GetDrinks(Guid customerId);
         
         /// <summary>
         /// Gets a Customer Object by its ID from a Database

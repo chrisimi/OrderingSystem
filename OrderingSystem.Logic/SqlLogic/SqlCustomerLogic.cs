@@ -1,96 +1,96 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using MySql.Data.MySqlClient;
 using OrderingSystem.Domain;
 using OrderingSystem.Logic.Interfaces;
 
 namespace OrderingSystem.Logic.SqlLogic
 {
-    public class SqlTableLogic : ITableLogic
+    public class SqlCustomerLogic : ICustomerLogic
     {
         private readonly DBConnection _dbConnection = DBConnection.Instance();
-        public void Add(Table table)
-        {
-            if (_dbConnection.IsConnected())
-            {
-                var query = "INSERT INTO tables(id, number, location_id) VALUES(@id, @number, @location_id)";
-
-                var command = new MySqlCommand(query, _dbConnection.Connection);
-                command.Parameters.AddWithValue("@id", table.Id);
-                command.Parameters.AddWithValue("@number", table.Number);
-                command.Parameters.AddWithValue("@location_id", table.LocationId);
-
-                command.ExecuteNonQuery();
-            }
-        }
-
-        public void Edit(Table table)
-        {
-            if (_dbConnection.IsConnected())
-            {
-                var query = "UPDATE tables SET number=@number, location_id=@location_id WHERE id=@id";
-
-                var command = new MySqlCommand(query, _dbConnection.Connection);
-                command.Parameters.AddWithValue("@id", table.Id);
-                command.Parameters.AddWithValue("@number", table.Number);
-                command.Parameters.AddWithValue("@location_id", table.LocationId);
-
-                command.ExecuteNonQuery();
-            }
-        }
-
-        public void Delete(Guid tableId)
-        {
-            if (_dbConnection.IsConnected())
-            {
-                var query = "DELETE FROM tables WHERE id=@id";
-
-                var command = new MySqlCommand(query, _dbConnection.Connection);
-                command.Parameters.AddWithValue("@id", tableId);
-
-                command.ExecuteNonQuery();
-            }
-        }
         
-        public void AddDrinkToTable(Guid tableId, Guid drinkId)
+        public void Add(Customer customer)
         {
             if (_dbConnection.IsConnected())
             {
-                var query = "INSERT INTO table_contents(id, table_id, drink_id) VALUES(@id, @table_id, @drink_id)";
+                var query = "INSERT INTO customers(id, name) VALUES(@id, @name)";
+
+                var command = new MySqlCommand(query, _dbConnection.Connection);
+                command.Parameters.AddWithValue("@id", customer.Id);
+                command.Parameters.AddWithValue("@name", customer.Name);
+
+                command.ExecuteNonQuery();
+            }
+        }
+
+        public void Edit(Customer customer)
+        {
+            if (_dbConnection.IsConnected())
+            {
+                var query = "UPDATE customers SET name=@name WHERE id=@id";
+
+                var command = new MySqlCommand(query, _dbConnection.Connection);
+                command.Parameters.AddWithValue("@id", customer.Id);
+                command.Parameters.AddWithValue("@name", customer.Name);
+
+                command.ExecuteNonQuery();
+            }
+        }
+
+        public void Delete(Guid customerId)
+        {
+            if (_dbConnection.IsConnected())
+            {
+                var query = "DELETE FROM customers WHERE id=@id";
+
+                var command = new MySqlCommand(query, _dbConnection.Connection);
+                command.Parameters.AddWithValue("@id", customerId);
+
+                command.ExecuteNonQuery();
+            }
+        }
+
+        public void AddDrinkToCustomer(Guid drinkId, Guid customerId)
+        {
+            if (_dbConnection.IsConnected())
+            {
+                var query =
+                    "INSERT INTO customer_contents(id, customer_id, drink_id) VALUES(@id, @customer_id, @drink_id)";
 
                 var command = new MySqlCommand(query, _dbConnection.Connection);
                 command.Parameters.AddWithValue("@id", Guid.NewGuid());
-                command.Parameters.AddWithValue("@table_id", tableId);
+                command.Parameters.AddWithValue("@customer_id", customerId);
                 command.Parameters.AddWithValue("@drink_id", drinkId);
 
                 command.ExecuteNonQuery();
             }
         }
-        
-        public void DeleteDrinkFromTable(Guid tableId, Guid drinkId)
+
+        public void DeleteDrinkFromCustomer(Guid drinkId, Guid customerId)
         {
             if (_dbConnection.IsConnected())
             {
-                var query = "DELETE FROM table_contents WHERE drink_id=@drink_id AND table_id=@table_id LIMIT 1";
+                var query = "DELETE FROM customer_contents WHERE drink_id=@drink_id AND customer_id=@customer_id LIMIT 1";
 
                 var command = new MySqlCommand(query, _dbConnection.Connection);
                 command.Parameters.AddWithValue("@drink_id", drinkId);
-                command.Parameters.AddWithValue("@table_id", tableId);
+                command.Parameters.AddWithValue("@customer_id", customerId);
 
                 command.ExecuteNonQuery();
             }
         }
 
-        public List<Drink> GetDrinks(Guid tableId)
+        public List<Drink> GetDrinks(Guid customerId)
         {
             if (_dbConnection.IsConnected())
             {
                 var returnList = new List<Drink>();
-                var query = "SELECT * FROM table_contents WHERE table_id=@table_id";
+                var query = "SELECT * FROM customer_contents WHERE customer_id=@customer_Id";
 
                 var command = new MySqlCommand(query, _dbConnection.Connection);
-                command.Parameters.AddWithValue("@table_id", tableId);
+                command.Parameters.AddWithValue("@customer_Id", customerId);
 
                 using MySqlDataReader reader = command.ExecuteReader();
 
@@ -115,26 +115,24 @@ namespace OrderingSystem.Logic.SqlLogic
             return null;
         }
 
-        public Table GetTable(Guid tableId)
+        public Customer GetCustomer(Guid customerId)
         {
             if (_dbConnection.IsConnected())
             {
-                var query = "SELECT * FROM tables WHERE id=@id";
+                var query = "SELECT * FROM customers WHERE id=@id";
 
                 var command = new MySqlCommand(query, _dbConnection.Connection);
-                command.Parameters.AddWithValue("@id", tableId);
+                command.Parameters.AddWithValue("@id", customerId);
 
                 using MySqlDataReader reader = command.ExecuteReader();
-
 
                 if (reader.HasRows)
                 {
                     reader.Read();
-                    return new Table()
+                    return new Customer()
                     {
                         Id = Guid.Parse(reader["id"].ToString()),
-                        Number = int.Parse(reader["number"].ToString()),
-                        LocationId = Guid.Parse(reader["location_id"].ToString())
+                        Name = reader["name"].ToString()
                     };
                 }
             }
@@ -142,13 +140,13 @@ namespace OrderingSystem.Logic.SqlLogic
             return null;
         }
 
-        public List<Table> GetTables()
+        public List<Customer> GetCustomers()
         {
             if (_dbConnection.IsConnected())
             {
-                var returnList = new List<Table>();
+                var returnList = new List<Customer>();
 
-                var query = "SELECT * FROM tables";
+                var query = "SELECT * FROM customers";
 
                 var command = new MySqlCommand(query, _dbConnection.Connection);
 
@@ -158,52 +156,19 @@ namespace OrderingSystem.Logic.SqlLogic
                 {
                     while (reader.Read())
                     {
-                        returnList.Add(new Table()
+                        returnList.Add(new Customer()
                         {
                             Id = Guid.Parse(reader["id"].ToString()),
-                            Number = int.Parse(reader["number"].ToString()),
-                            LocationId = Guid.Parse(reader["location_id"].ToString())
+                            Name = reader["name"].ToString()
                         });
                     }
 
                     return returnList;
                 }
+
             }
 
             return null;
         }
-
-        public List<Table> GetTablesByLocation(Guid locationId)
-        {
-            if (_dbConnection.IsConnected())
-            {
-                var returnList = new List<Table>();
-
-                var query = "SELECT * FROM tables WHERE location_id=@location_id";
-
-                var command = new MySqlCommand(query, _dbConnection.Connection);
-                command.Parameters.AddWithValue("@location_id", locationId);
-
-                using MySqlDataReader reader = command.ExecuteReader();
-
-                if (reader.HasRows)
-                {
-                    while (reader.Read())
-                    {
-                        returnList.Add(new Table()
-                        {
-                            Id = Guid.Parse(reader["id"].ToString()),
-                            Number = int.Parse(reader["number"].ToString()),
-                            LocationId = Guid.Parse(reader["location_id"].ToString())
-                        });
-                    }
-
-                    return returnList;
-                }
-            }
-
-            return null;
-        }
-        
     }
 }
