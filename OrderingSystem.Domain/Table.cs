@@ -6,7 +6,7 @@ namespace OrderingSystem.Domain
     public class Table
     {
         public Guid Id { get; set; }
-        public int Number { get; set; }
-        public List<Drink> Drinks { get; set; }
+        public int? Number { get; set; }
+        public Guid? LocationId { get; set; }
     }
 }

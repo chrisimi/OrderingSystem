@@ -7,7 +7,7 @@ namespace OrderingSystem.Domain
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
-        public float Price { get; set; }
+        public float? Price { get; set; }
         public string Ingredients { get; set; }
         public string ExtraInfo { get; set; }
     }
