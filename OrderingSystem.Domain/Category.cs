@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace OrderingSystem.Domain
 {
@@ -6,5 +7,6 @@ namespace OrderingSystem.Domain
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
+        public List<SubCategory> SubCategories { get; set; }
     }
 }

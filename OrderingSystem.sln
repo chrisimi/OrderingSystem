@@ -1,8 +1,10 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderingSystemTesting", "OrderingSystemTesting\OrderingSystemTesting.csproj", "{5837FCDF-69FD-4EAF-9EE3-F9B3F8E2D22B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderingSystem.Testing", "OrderingSystem.Testing\OrderingSystem.Testing.csproj", "{5837FCDF-69FD-4EAF-9EE3-F9B3F8E2D22B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderingSystem.Domain", "OrderingSystem.Domain\OrderingSystem.Domain.csproj", "{FAB316AF-4339-4B9F-81C8-D33EF19E195F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderingSystem.Logic", "OrderingSystem.Logic\OrderingSystem.Logic.csproj", "{DABBD288-0171-47D4-9551-53D898DC88E2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,5 +20,9 @@ Global
 		{FAB316AF-4339-4B9F-81C8-D33EF19E195F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FAB316AF-4339-4B9F-81C8-D33EF19E195F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FAB316AF-4339-4B9F-81C8-D33EF19E195F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DABBD288-0171-47D4-9551-53D898DC88E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DABBD288-0171-47D4-9551-53D898DC88E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DABBD288-0171-47D4-9551-53D898DC88E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DABBD288-0171-47D4-9551-53D898DC88E2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

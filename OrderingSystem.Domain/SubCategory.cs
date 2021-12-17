@@ -8,6 +8,5 @@ namespace OrderingSystem.Domain
         public Guid Id { get; set; }
         public string Name { get; set; }
         public List<Drink> Drinks { get; set; }
-        public Guid ParentCat { get; set; }
     }
 }
