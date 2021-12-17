@@ -15,7 +15,7 @@ namespace OrderingSystem.Logic.Interfaces
         /// <summary>
         /// Edits a Location Object in a Database
         /// </summary>
-        /// <param name="location">The Location Database</param>
+        /// <param name="location">The new Location Database</param>
         void Edit(Location location);
         
         /// <summary>

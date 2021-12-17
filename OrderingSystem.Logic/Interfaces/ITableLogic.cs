@@ -15,7 +15,7 @@ namespace OrderingSystem.Logic.Interfaces
         /// <summary>
         /// Edits a Table object in a Database
         /// </summary>
-        /// <param name="table">The Table Object</param>
+        /// <param name="table">The new Table Object</param>
         void Edit(Table table);
         
         

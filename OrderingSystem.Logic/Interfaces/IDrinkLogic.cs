@@ -15,13 +15,13 @@ namespace OrderingSystem.Logic.Interfaces
         /// <summary>
         /// Edits a Drink Object in a Database
         /// </summary>
-        /// <param name="drink">The Drink Object</param>
+        /// <param name="drink">The new Drink Object</param>
         void Edit(Drink drink);
         
         /// <summary>
         /// Deletes a Drink Object from a Database
         /// </summary>
-        /// <param name="drinkId">The ID fo the Drink</param>
+        /// <param name="drinkId">The ID of the Drink</param>
         void Delete(Guid drinkId);
         
         /// <summary>
