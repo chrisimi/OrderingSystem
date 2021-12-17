@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using MySql.Data.MySqlClient;
 using OrderingSystem.Domain;
 using OrderingSystem.Logic.Interfaces;
 
@@ -7,44 +9,201 @@ namespace OrderingSystem.Logic.SqlLogic
 {
     public class SqlTableLogic : ITableLogic
     {
+        private readonly DBConnection _dbConnection = DBConnection.Instance();
         public void Add(Table table)
         {
-            throw new NotImplementedException();
+            if (_dbConnection.IsConnected())
+            {
+                var query = "INSERT INTO tables(id, number, location_id) VALUES(@id, @number, @location_id)";
+
+                var command = new MySqlCommand(query, _dbConnection.Connection);
+                command.Parameters.AddWithValue("@id", table.Id);
+                command.Parameters.AddWithValue("@number", table.Number);
+                command.Parameters.AddWithValue("@location_id", table.LocationId);
+
+                command.ExecuteNonQuery();
+            }
         }
 
         public void Edit(Table table)
         {
-            throw new NotImplementedException();
+            if (_dbConnection.IsConnected())
+            {
+                var query = "UPDATE tables SET number=@number, location_id=@location_id WHERE id=@id";
+
+                var command = new MySqlCommand(query, _dbConnection.Connection);
+                command.Parameters.AddWithValue("@id", table.Id);
+                command.Parameters.AddWithValue("@number", table.Number);
+                command.Parameters.AddWithValue("@location_id", table.LocationId);
+
+                command.ExecuteNonQuery();
+            }
         }
 
-        public void Delete(Table table)
+        public void Delete(Guid tableId)
         {
-            throw new NotImplementedException();
+            if (_dbConnection.IsConnected())
+            {
+                var query = "DELETE FROM tables WHERE id=@id";
+
+                var command = new MySqlCommand(query, _dbConnection.Connection);
+                command.Parameters.AddWithValue("@id", tableId);
+
+                command.ExecuteNonQuery();
+            }
+        }
+        
+        public void AddDrinkToTable(Guid tableId, Guid drinkId)
+        {
+            if (_dbConnection.IsConnected())
+            {
+                var query = "INSERT INTO table_contents(id, table_id, drink_id) VALUES(@id, @table_id, @drink_id)";
+
+                var command = new MySqlCommand(query, _dbConnection.Connection);
+                command.Parameters.AddWithValue("@id", Guid.NewGuid());
+                command.Parameters.AddWithValue("@table_id", tableId);
+                command.Parameters.AddWithValue("@drink_id", drinkId);
+
+                command.ExecuteNonQuery();
+            }
+        }
+        
+        public void DeleteDrinkFromTable(Guid tableId, Guid drinkId)
+        {
+            if (_dbConnection.IsConnected())
+            {
+                var query = "DELETE FROM table_contents WHERE drink_id=@drink_id AND table_id=@table_id LIMIT 1";
+
+                var command = new MySqlCommand(query, _dbConnection.Connection);
+                command.Parameters.AddWithValue("@drink_id", tableId);
+                command.Parameters.AddWithValue("@table_id", drinkId);
+
+                command.ExecuteNonQuery();
+            }
         }
 
-        public void AddDrinkToTable(Drink drink)
+        public List<Drink> GetDrinks(Guid tableId)
         {
-            throw new NotImplementedException();
+            if (_dbConnection.IsConnected())
+            {
+                var returnList = new List<Drink>();
+                var query = "SELECT * FROM table_contents WHERE table_id=@table_id";
+
+                var command = new MySqlCommand(query, _dbConnection.Connection);
+                command.Parameters.AddWithValue("@table_id", tableId);
+
+                using MySqlDataReader reader = command.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        returnList.Add(new Drink()
+                        {
+                            Id = Guid.Parse(reader["id"].ToString()),
+                            Name = reader["name"].ToString(),
+                            Price = float.Parse(reader["price"].ToString()),
+                            Ingredients = reader["ingredients"].ToString(),
+                            ExtraInfo = reader["extra_info"].ToString()
+                        });
+                    }
+
+                    return returnList;
+                }
+            }
+
+            return null;
         }
 
-        public void DeleteDrinkFromTable(Drink drink)
+        public Table GetTable(Guid tableId)
         {
-            throw new NotImplementedException();
-        }
+            if (_dbConnection.IsConnected())
+            {
+                var query = "SELECT * FROM tables WHERE id=@id";
 
-        public Table GetTable(Guid guid)
-        {
-            throw new NotImplementedException();
+                var command = new MySqlCommand(query, _dbConnection.Connection);
+                command.Parameters.AddWithValue("@id", tableId);
+
+                using MySqlDataReader reader = command.ExecuteReader();
+
+
+                if (reader.HasRows)
+                {
+                    reader.Read();
+                    return new Table()
+                    {
+                        Id = Guid.Parse(reader["id"].ToString()),
+                        Number = int.Parse(reader["number"].ToString()),
+                        LocationId = Guid.Parse(reader["location_id"].ToString())
+                    };
+                }
+            }
+
+            return null;
         }
 
         public List<Table> GetTables()
         {
-            throw new NotImplementedException();
+            if (_dbConnection.IsConnected())
+            {
+                var returnList = new List<Table>();
+
+                var query = "SELECT * FROM tables";
+
+                var command = new MySqlCommand(query, _dbConnection.Connection);
+
+                using MySqlDataReader reader = command.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        returnList.Add(new Table()
+                        {
+                            Id = Guid.Parse(reader["id"].ToString()),
+                            Number = int.Parse(reader["number"].ToString()),
+                            LocationId = Guid.Parse(reader["location_id"].ToString())
+                        });
+                    }
+
+                    return returnList;
+                }
+            }
+
+            return null;
         }
 
-        public List<Drink> GetDrinks()
+        public List<Table> GetTablesByLocation(Guid locationId)
         {
-            throw new NotImplementedException();
+            if (_dbConnection.IsConnected())
+            {
+                var returnList = new List<Table>();
+
+                var query = "SELECT * FROM tables WHERE location_id=@location_id";
+
+                var command = new MySqlCommand(query, _dbConnection.Connection);
+                command.Parameters.AddWithValue("@location_id", locationId);
+
+                using MySqlDataReader reader = command.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        returnList.Add(new Table()
+                        {
+                            Id = Guid.Parse(reader["id"].ToString()),
+                            Number = int.Parse(reader["number"].ToString()),
+                            LocationId = Guid.Parse(reader["location_id"].ToString())
+                        });
+                    }
+
+                    return returnList;
+                }
+            }
+
+            return null;
         }
+        
     }
 }

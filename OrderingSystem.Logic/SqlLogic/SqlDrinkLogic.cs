@@ -10,12 +10,11 @@ namespace OrderingSystem.Logic.SqlLogic
     public class SqlDrinkLogic : IDrinkLogic
     {
         private readonly DBConnection _dbConnection = DBConnection.Instance();
-
         public void Add(Drink drink)
         {
             if (_dbConnection.IsConnected())
             {
-                const string query =
+                var query =
                     "INSERT INTO drinks(id, name, price, ingredients, extra_info) VALUES(@id, @name, @price, @ingredients, @extra_info)";
 
                 var command = new MySqlCommand(query, _dbConnection.Connection);
@@ -28,16 +27,15 @@ namespace OrderingSystem.Logic.SqlLogic
                 command.ExecuteNonQuery();
             }
         }
-
+        
         public void Edit(Drink drink)
         {
             if (_dbConnection.IsConnected())
             {
-                const string query =
-                    "UPDATE drinks SET id=@id, name=@name, price=@price, ingredients=@ingredients, extra_info=@extra_info WHERE id=@id";
+                var query =
+                    "UPDATE drinks SET name=@name, price=@price, ingredients=@ingredients, extra_info=@extra_info WHERE id=@id";
 
                 var command = new MySqlCommand(query, _dbConnection.Connection);
-                command.Parameters.AddWithValue("@id", drink.Id);
                 command.Parameters.AddWithValue("@name", drink.Name);
                 command.Parameters.AddWithValue("@price", drink.Price);
                 command.Parameters.AddWithValue("@ingredients", drink.Ingredients);
@@ -46,28 +44,29 @@ namespace OrderingSystem.Logic.SqlLogic
                 command.ExecuteNonQuery();
             }
         }
-
-        public void Delete(Drink drink)
+        
+        public void Delete(Guid drinkId)
         {
             if (_dbConnection.IsConnected())
             {
-                const string query = "DELETE FROM drinks WHERE id=@id";
+                var query = "DELETE FROM drinks WHERE id=@id";
 
                 var command = new MySqlCommand(query, _dbConnection.Connection);
-                command.Parameters.AddWithValue("@id", drink.Id);
+                command.Parameters.AddWithValue("@id", drinkId);
 
                 command.ExecuteNonQuery();
             }
         }
 
-        public Drink GetDrink(Guid guid)
+
+        public Drink GetDrink(Guid drinkId)
         {
             if (_dbConnection.IsConnected())
             {
-                const string query = "SELECT * FROM drinks WHERE id=@id";
+                var query = "SELECT * FROM drinks WHERE id=@id";
 
                 var command = new MySqlCommand(query, _dbConnection.Connection);
-                command.Parameters.AddWithValue("@id", guid);
+                command.Parameters.AddWithValue("@id", drinkId);
                 
                 
                 using MySqlDataReader reader = command.ExecuteReader();
@@ -89,14 +88,14 @@ namespace OrderingSystem.Logic.SqlLogic
 
             return null;
         }
-
+        
         public List<Drink> GetDrinks()
         {
             if (_dbConnection.IsConnected())
             {
                 var returnList = new List<Drink>();
 
-                const string query = "SELECT * FROM drinks";
+                var query = "SELECT * FROM drinks";
 
                 var command = new MySqlCommand(query, _dbConnection.Connection);
 
