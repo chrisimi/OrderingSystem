@@ -28,9 +28,10 @@ namespace OrderingSystem.Logic.SqlLogic
         {
             if (_dbConnection.IsConnected())
             {
-                var query = "UPDATE locations SET name=@name";
+                var query = "UPDATE locations SET name=@name WHERE id=@id";
 
                 var command = new MySqlCommand(query, _dbConnection.Connection);
+                command.Parameters.AddWithValue("@id", location.Id);
                 command.Parameters.AddWithValue("@name", location.Name);
 
                 command.ExecuteNonQuery();
@@ -60,8 +61,6 @@ namespace OrderingSystem.Logic.SqlLogic
                 command.Parameters.AddWithValue("@id", locationId);
 
                 using MySqlDataReader reader = command.ExecuteReader();
-
-                
                 
                 if (reader.HasRows)
                 {
