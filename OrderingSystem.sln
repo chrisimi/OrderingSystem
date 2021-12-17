@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderingSystem.Domain", "Or
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderingSystem.Logic", "OrderingSystem.Logic\OrderingSystem.Logic.csproj", "{DABBD288-0171-47D4-9551-53D898DC88E2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderingSystem.WPF", "OrderingSystem.WPF\OrderingSystem.WPF.csproj", "{7E260D99-4BA7-400E-92E1-91C97BEA586C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{DABBD288-0171-47D4-9551-53D898DC88E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DABBD288-0171-47D4-9551-53D898DC88E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DABBD288-0171-47D4-9551-53D898DC88E2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7E260D99-4BA7-400E-92E1-91C97BEA586C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E260D99-4BA7-400E-92E1-91C97BEA586C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E260D99-4BA7-400E-92E1-91C97BEA586C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E260D99-4BA7-400E-92E1-91C97BEA586C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
