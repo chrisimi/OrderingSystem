@@ -7,6 +7,7 @@ namespace OrderingSystem.Domain
     {
         public Guid Id { get; set; }
         public string Label { get; set; }
-        public Guid? LocationId { get; set; }
+        public Guid LocationId { get; set; }
+        public WpfInfo WpfInfo { get; set; }
     }
 }

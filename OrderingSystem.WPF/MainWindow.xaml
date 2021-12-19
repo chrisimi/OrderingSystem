@@ -7,6 +7,21 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid ShowGridLines="True">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="200"/>
+        </Grid.ColumnDefinitions>
+
+        <Label Content="Ordering System" Margin="10,10,10,10" FontSize="40" Grid.ColumnSpan="2"/>
+        <TabControl x:Name="Tabs" Grid.Column="0" Grid.Row="1">
+            <Button Content="Button" HorizontalAlignment="Left" Height="31" Margin="269,0,0,0"/>
+            <Button Content="Button" HorizontalAlignment="Left" Height="31" Margin="168,10,0,0"/>
+
+        </TabControl>
 
     </Grid>
 </Window>

@@ -14,12 +14,13 @@ namespace OrderingSystem.Logic.SqlLogic
         {
             if (_dbConnection.IsConnected())
             {
-                var query = "INSERT INTO tables(id, label, location_id) VALUES(@id, @label, @location_id)";
+                var query = "INSERT INTO tables(id, label, location_id, wpf_info) VALUES(@id, @label, @location_id, @wpf_info)";
 
                 var command = new MySqlCommand(query, _dbConnection.Connection);
                 command.Parameters.AddWithValue("@id", table.Id);
                 command.Parameters.AddWithValue("@label", table.Label);
                 command.Parameters.AddWithValue("@location_id", table.LocationId);
+                command.Parameters.AddWithValue("@wpf_info", WpfInfo.ToString(table.WpfInfo));
 
                 command.ExecuteNonQuery();
             }
@@ -29,12 +30,13 @@ namespace OrderingSystem.Logic.SqlLogic
         {
             if (_dbConnection.IsConnected())
             {
-                var query = "UPDATE tables SET label=@label, location_id=@location_id WHERE id=@id";
+                var query = "UPDATE tables SET label=@label, location_id=@location_id, wpf_info=@wpf_info WHERE id=@id";
 
                 var command = new MySqlCommand(query, _dbConnection.Connection);
                 command.Parameters.AddWithValue("@id", table.Id);
                 command.Parameters.AddWithValue("@label", table.Label);
                 command.Parameters.AddWithValue("@location_id", table.LocationId);
+                command.Parameters.AddWithValue("@wpf_info", WpfInfo.ToString(table.WpfInfo));
 
                 command.ExecuteNonQuery();
             }
@@ -133,8 +135,9 @@ namespace OrderingSystem.Logic.SqlLogic
                     return new Table()
                     {
                         Id = Guid.Parse(reader["id"].ToString()),
-                        Label = reader["number"].ToString(),
-                        LocationId = Guid.Parse(reader["location_id"].ToString())
+                        Label = reader["label"].ToString(),
+                        LocationId = Guid.Parse(reader["location_id"].ToString()),
+                        WpfInfo = WpfInfo.Parse(reader["wpf_info"].ToString())
                     };
                 }
             }
@@ -161,8 +164,9 @@ namespace OrderingSystem.Logic.SqlLogic
                         returnList.Add(new Table()
                         {
                             Id = Guid.Parse(reader["id"].ToString()),
-                            Label = reader["number"].ToString(),
-                            LocationId = Guid.Parse(reader["location_id"].ToString())
+                            Label = reader["label"].ToString(),
+                            LocationId = Guid.Parse(reader["location_id"].ToString()),
+                            WpfInfo = WpfInfo.Parse(reader["wpf_info"].ToString())
                         });
                     }
 
@@ -193,8 +197,9 @@ namespace OrderingSystem.Logic.SqlLogic
                         returnList.Add(new Table()
                         {
                             Id = Guid.Parse(reader["id"].ToString()),
-                            Label = reader["number"].ToString(),
-                            LocationId = Guid.Parse(reader["location_id"].ToString())
+                            Label = reader["label"].ToString(),
+                            LocationId = Guid.Parse(reader["location_id"].ToString()),
+                            WpfInfo = WpfInfo.Parse(reader["wpf_info"].ToString())
                         });
                     }
 
